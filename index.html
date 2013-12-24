@@ -1,0 +1,219 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cronômetro LAPEO</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <style>
+
+
+            @media all and (max-width: 420px) {
+                li.cronometro{
+                    border: none !important;
+                    border-bottom: 1px solid black !important;
+                    display: inline-block;
+                    text-align: center;
+                    float: left;
+                    margin: 0px !important;
+                    padding: 6px 0px 0px 0px;
+                    width: 100%;
+                }
+                ul#listCronometro{
+                    margin: 0px !important;
+                }
+            }
+
+            @font-face {
+                font-family: Digital;
+                font-style: normal;
+                src: url(font/DIGITALDREAM.ttf); /*if IE */
+            }
+
+            *{
+                font-family: sans-serif;
+                overflow-x: hidden;
+                overflow-y: hidden;
+            }
+
+            body, html{
+                margin: 0px;
+            }
+
+            li.cronometro{
+                border: 1px solid black;
+                display: inline-block;
+                text-align: center;
+                float: left;
+                margin: 10px;
+            }
+
+            img{
+                cursor: pointer;
+                opacity: 0.7;
+                margin: 3px;
+            }
+            img:hover{
+                opacity: 1;
+            }
+
+
+            ul#listCronometro{
+                list-style: none;
+                padding: 0px;
+            }
+            div.tempo{
+                font-family: Digital;
+                font-size: 17pt;
+                margin: 10px;
+            }
+
+            .animfim{
+                animation: fim 3s ease;
+                -webkit-animation: fim 3s ease;
+            }
+
+            .inputTime{
+                width: 40px;
+                height: 30px;
+                border-radius: 8px;
+                text-align: center;
+                font-size: 13pt;
+                border: 1px solid black;
+            }
+
+            .selectE{
+                width: 150px;
+                height: 30px;
+                border-radius: 8px;
+                text-align: center;
+                font-size: 13pt;
+                border: 1px solid black;
+            }
+
+            .header, .footer, .content{
+                position: absolute;
+                padding: 2px;
+                width: 100%
+            }
+
+            .header{
+                height: 50px;
+                border-bottom: 1px solid black;
+            }
+            .content{
+                top: 55px;
+                bottom: 25px;
+            }
+            .footer{
+                height: 21px;
+                text-align: center;
+                bottom: 0px;
+            }
+
+            #settingsPage{
+                display: none;
+                position: fixed;
+                height: 100%;
+                width: 100%;
+                z-index: 3;
+                background-color: lightgrey;
+                overflow-y: auto;
+                text-align: center;
+            }
+
+            #tableConfig > tbody > tr > td{
+                padding: 7px;
+                border-bottom: 1px solid black;
+            }
+            #tableConfig{
+                border-collapse: collapse;
+            }
+            .progressbar{
+                border-bottom: 4px solid dodgerblue;
+                width: 0%;
+            }
+
+            @keyframes fim {
+                0%   { background-color: white; }
+                25%  { background-color: tomato; }
+                50%  { background-color: white; }
+                75%  { background-color: tomato; }
+                100% { background-color: white; }
+            } 
+            @-webkit-keyframes fim {
+                0%   { background-color: white; }
+                25%  { background-color: tomato; }
+                50%  { background-color: white; }
+                75%  { background-color: tomato; }
+                100% { background-color: white; }
+            }
+
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                /* display: none; <- Crashes Chrome on hover */
+                -webkit-appearance: none;
+                margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+            }
+
+        </style>
+        <script src="js/jquery-1.10.2.min.js"></script>
+        <script src="js/crono.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <table>
+                <tr>
+                    <td><img id="btnSetting" src="img/setting_tools.png"></td>
+                    <td><img id="btnAddClock" src="img/clock_add.png"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="content" style="overflow-y: auto;">
+            <ul id="listCronometro" >
+                <!--<li class="cronometro" data-state="stop" data-timeStamp="0" data-time="0">
+                    <div class="tempo">00:05:00</div>
+                    <img class="btnPlay" src="img/play.png">
+                    <img class="btnPause" src="img/pause.png">
+                    <img class="btnStop" src="img/stop.png">
+                    <div id="progressbar"></div>
+                </li> -->
+            </ul>
+        </div>
+        <div class="footer">
+            burncode
+        </div>
+        <div id="settingsPage">
+            <h2>Configurações</h2>
+            <table id="tableConfig" style="margin: 2px auto;">
+                <tbody>
+                    <tr>
+                        <td>Tempo </td> <td><input id="thoras" value="0" class="inputTime" type="number"> : 
+                            <input id="tmin" value="5" class="inputTime" type="number"> : 
+                            <input id="tseg" value="0" class="inputTime" type="number"></td>
+                    </tr>
+                    <tr>
+                        <td>Beep </td> <td><input id="bhoras" value="0" class="inputTime" type="number"> : 
+                            <input id="bmin" value="0" class="inputTime" type="number"> : 
+                            <input id="bseg" value="0" class="inputTime" type="number"></td>
+                    </tr>
+                    <tr>
+                        <td>Modo </td><td><select id="selectModo" class="selectE"><option>Contador</option><option selected>Regressivo</option></select></td>
+                    </tr>
+                    <tr>
+                        <td></td> <td style="text-align: right;"><img id="btnConfirmSetting" src="img/tick_octagon.png"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <audio id="audio"><source src="sound/cuckoo.mp3" type="audio/mp3"></audio>
+        <audio id="audioBeep"><source src="sound/beep.mp3" type="audio/mp3"></audio>
+    </body>
+
+</html>
