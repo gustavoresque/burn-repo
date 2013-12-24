@@ -38,7 +38,8 @@
         }
         
 
-        $("#btnAddClock").click(function() {
+        $("#btnAddClock").on("click tap", function() {
+            l("addClockTAPED");
             var c = new Cronometro();
             cronos.push(c);
             var h, m, s;
@@ -88,7 +89,7 @@
                         $("<div/>", {class: "progressbar"})));
         });
 
-        $("ul#listCronometro").on("click", "li.cronometro > img.btnPlay", function() {
+        $("ul#listCronometro").on("click tap", "li.cronometro > img.btnPlay", function() {
             //$(this).parent().attr("data-state", "play");
             //$(this).parent().attr("data-timeStamp", new Date().getTime());
             var t = $(this).parent();
@@ -96,13 +97,13 @@
             cronos[i].play();
             t.removeClass("animfim");
         });
-        $("ul#listCronometro").on("click", "li.cronometro > img.btnPause", function() {
+        $("ul#listCronometro").on("click tap", "li.cronometro > img.btnPause", function() {
             var t = $(this).parent();
             var i = $("ul#listCronometro > li").index(t);
             cronos[i].pause();
             t.removeClass("animfim");
         });
-        $("ul#listCronometro").on("click", "li.cronometro > img.btnStop", function() {
+        $("ul#listCronometro").on("click tap", "li.cronometro > img.btnStop", function() {
             var t = $(this).parent();
             var i = $("ul#listCronometro > li").index(t);
             cronos[i].stop();
@@ -126,7 +127,7 @@
             $(this).get(0).select();
         });
 
-        $("#btnConfirmSetting").on("click", function() {
+        $("#btnConfirmSetting").on("click tap", function() {
             var h = parseInt($("#thoras").val()), m = parseInt($("#tmin").val()), s = parseInt($("#tseg").val());
             localStorage.time = s+" "+m+" "+h;
             for (var i=0;i<cronos.length;i++){
@@ -140,7 +141,7 @@
             $("#settingsPage").slideUp("slow");
         });
 
-        $("#btnSetting").on("click", function() {
+        $("#btnSetting").on("click tap", function() {
             $("#settingsPage").slideDown("slow");
         });
         
@@ -169,16 +170,32 @@
         
         //Para dispositivos móveis
         var tar, duracao;
-        $("body").on("touchstart", function(e){
+        var todo = document.getElementById("todo");
+        todo.addEventListener("touchstart", function(e){
             e.preventDefault();
+            l("touchstart");
             tar = e.target;
             duracao = new Date().getTime();
-        }).on("touchend", function(e){
+        }, false);
+        todo.addEventListener("touchend", function(e){
             e.preventDefault();
-            if(tar === e.target && (new Date().getTime()) - duracao <2000){
-                $(e.target).trigger("click");
+            l("touchend");
+            if(tar == e.target && (new Date().getTime()) - duracao <2000){
+                l("tap");
+                $(e.target).trigger({type: "tap", target: e.target});
             }
-        });
+        }, false);
+        
+//        $("body").on("touchstart", function(e){
+//            e.preventDefault();
+//            tar = e.target;
+//            duracao = new Date().getTime();
+//        }).on("touchend", function(e){
+//            e.preventDefault();
+//            if(tar === e.target && (new Date().getTime()) - duracao <2000){
+//                $(e.target).trigger("click");
+//            }
+//        });
         
         
         
@@ -219,6 +236,12 @@
         return (h < 10 ? "0" + h : h) +
                 ":" + (m < 10 ? "0" + m : m) +
                 ":" + (s < 10 ? "0" + s : s);
+    }
+    
+    function l(p){
+        if(true){
+            console.log(p);
+        }
     }
 
 
