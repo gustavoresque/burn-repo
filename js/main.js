@@ -6,6 +6,9 @@
         
         l("ready");
         var cronos = [];
+        var endAudio = document.getElementById("audio");
+        var beepAudio = document.getElementById("audioBeep");
+        
         
         
         if(localStorage.modo && parseInt(localStorage.modo) === Cronometro.MODE_CONT){
@@ -70,15 +73,17 @@
                 display.text(maskTemp(s, m, h));
             }).onFinish(function() {
                 display.parent().addClass("animfim");
-                $("#audio").get(0).play();
+                endAudio.play();
+                //$("#audio").get(0).play();
                 setTimeout(function() {
                     display.text(maskTemp.apply(this, c.getCurrentTime()));
                 }, 100);
 
             }).onBeep(function() {
-                $("#audioBeep").get(0).play();
+                //$("#audioBeep").get(0).play();
+                beepAudio.play();
             }).onCountPerc(function(perc) {
-                console.log(perc);
+                //console.log(perc);
                 display.parent().children(".progressbar").css("width", perc+"%");
             });
             $("ul#listCronometro").append(
@@ -126,6 +131,8 @@
             campo.val(valor);
         }).on("focus mouseup", function() {
             $(this).get(0).select();
+        }).on("tap", function(e) {
+            $(e.target).trigger({type: "focus", target: e.target});
         });
 
         $("#btnConfirmSetting").on("click tap", function() {
@@ -159,13 +166,15 @@
                     cronos[i].setMode(Cronometro.MODE_REGR);
                 }
             }
+        }).on("tap", function(e) {
+            $(e.target).trigger({type: "focus", target: e.target});
         });
 
-        $("#audio").get(0).addEventListener("ended", function() {
-            this.load();
+        endAudio.addEventListener("ended", function() {
+            endAudio.load();
         }, false);
-        $("#audioBeep").get(0).addEventListener("ended", function() {
-            this.load();
+        beepAudio.addEventListener("ended", function() {
+            beepAudio.load();
         }, false);
         
         
@@ -174,13 +183,13 @@
         var todo = document.getElementById("todo");
         todo.addEventListener("touchstart", function(e){
             e.preventDefault();
-            l("touchstart");
+            //l("touchstart");
             tar = e.target;
             duracao = new Date().getTime();
         }, false);
         todo.addEventListener("touchend", function(e){
             e.preventDefault();
-            l("touchend");
+            //l("touchend");
             if(tar == e.target && (new Date().getTime()) - duracao <2000){
                 l("tap");
                 $(e.target).trigger({type: "tap", target: e.target});

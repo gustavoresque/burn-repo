@@ -169,8 +169,8 @@ and open the template in the editor.
         <div class="header">
             <table>
                 <tr>
-                    <td><img id="btnSetting" src="img/setting_tools.png"></td>
-                    <td><img id="btnAddClock" src="img/clock_add.png"></td>
+                    <td><img id="btnSetting" src="img/setting_tools.png" alt="settings"></td>
+                    <td><img id="btnAddClock" src="img/clock_add.png" alt="add_clock"></td>
                 </tr>
             </table>
         </div>
@@ -206,14 +206,20 @@ and open the template in the editor.
                         <td>Modo </td><td><select id="selectModo" class="selectE"><option>Contador</option><option selected>Regressivo</option></select></td>
                     </tr>
                     <tr>
-                        <td></td> <td style="text-align: right;"><img id="btnConfirmSetting" src="img/tick_octagon.png"></td>
+                        <td></td> <td style="text-align: right;"><img id="btnConfirmSetting" src="img/tick_octagon.png" alt="confirm"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <audio id="audio"><source src="sound/cuckoo.mp3" type="audio/mp3"></audio>
-        <audio id="audioBeep"><source src="sound/beep.mp3" type="audio/mp3"></audio>
+        <audio id="audio">
+            <source src="sound/cuckoo.mp3" type="audio/mpeg">
+            <source src="sound/cuckoo.ogg" type="audio/ogg">
+        </audio>
+        <audio id="audioBeep">
+            <source src="sound/beep.mp3" type="audio/mpeg">
+            <source src="sound/beep.ogg" type="audio/ogg">
+        </audio>
     </body>
 
 </html>
