@@ -3,7 +3,8 @@
 (function($) {
 
     $(document).ready(function() {
-
+        
+        l("ready");
         var cronos = [];
         
         
@@ -52,7 +53,7 @@
                 h = parseInt($("#thoras").val()); m = parseInt($("#tmin").val()); s = parseInt($("#tseg").val());
             }
             c.setTime(s, m, h);
-            var display = $("<div/>", {class: "tempo", text: maskTemp(s, m, h)});
+            var display = $("<div/>", {"class": "tempo", text: maskTemp(s, m, h)});
             
             if(localStorage.beep){
                 var beepStorage = localStorage.beep.split(" ");
@@ -81,12 +82,12 @@
                 display.parent().children(".progressbar").css("width", perc+"%");
             });
             $("ul#listCronometro").append(
-                    $("<li/>", {class: "cronometro"}).append(
+                    $("<li/>", {"class": "cronometro"}).append(
                         display).append(
-                        $("<img/>", {class: "btnPlay", src: "img/play.png"})).append(
-                        $("<img/>", {class: "btnPause", src: "img/pause.png"})).append(
-                        $("<img/>", {class: "btnStop", src: "img/stop.png"})).append(
-                        $("<div/>", {class: "progressbar"})));
+                        $("<img/>", {"class": "btnPlay", src: "img/play.png"})).append(
+                        $("<img/>", {"class": "btnPause", src: "img/pause.png"})).append(
+                        $("<img/>", {"class": "btnStop", src: "img/stop.png"})).append(
+                        $("<div/>", {"class": "progressbar"})));
         });
 
         $("ul#listCronometro").on("click tap", "li.cronometro > img.btnPlay", function() {
