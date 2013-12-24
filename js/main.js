@@ -132,6 +132,7 @@
         }).on("focus mouseup", function() {
             $(this).get(0).select();
         }).on("tap", function(e) {
+            $(e.target).trigger({type: "click", target: e.target});
             $(e.target).trigger({type: "focus", target: e.target});
         });
 
@@ -167,6 +168,7 @@
                 }
             }
         }).on("tap", function(e) {
+            $(e.target).trigger({type: "click", target: e.target});
             $(e.target).trigger({type: "focus", target: e.target});
         });
 
