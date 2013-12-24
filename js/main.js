@@ -166,13 +166,16 @@
             this.load();
         }, false);
         
+        
         //Para dispositivos móveis
         var tar, duracao;
-        $("img").on("touchstart", function(e){
+        $("body").on("touchstart", function(e){
+            e.preventDefault();
             tar = e.target;
             duracao = new Date().getTime();
         }).on("touchend", function(e){
-            if(tar === e.target && (new Date().getTime()) - duracao <1500){
+            e.preventDefault();
+            if(tar === e.target && (new Date().getTime()) - duracao <2000){
                 $(e.target).trigger("click");
             }
         });
