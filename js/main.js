@@ -2,78 +2,157 @@
 
 (function($) {
 
+
+//    var endAudio;
+//    var beepAudio;
+    var deviceReady;
+
+//    document.addEventListener("deviceready", function() {
+//
+//        l("deviceReady");
+//        deviceReady = true;
+//
+//        endAudio = new Media("sound/cuckoo.ogg", function() {
+//            l("EndAudio: Audio Success");
+//        }, function(err) {
+//            l("EndAudio: Audio Error: " + JSON.stringify(err));
+//        });
+//
+//        beepAudio = new Media("sound/beep.ogg", function() {
+//            l("Beep: Audio Success");
+//        }, function(err) {
+//            l("Beep: Audio Error: " + JSON.stringify(err));
+//        });
+//
+//    }, false);
+
+
+
+    function playEndAudio() {
+        if (deviceReady) {
+            var audioFim = new Media("sound/cuckoo.mp3", function() {
+                l("EndAudio: Audio Success");
+            }, function(err) {
+                l("EndAudio: Audio Error: " + JSON.stringify(err));
+            });
+            audioFim.play();
+        }
+    }
+    function playBeepAudio() {
+        if (deviceReady) {
+            var audioBeep = new Media("sound/beep.mp3", function() {
+                l("Beep: Audio Success");
+            }, function(err) {
+                l("Beep: Audio Error: " + JSON.stringify(err));
+            });
+            audioBeep.play();
+        }
+
+    }
+
+
+
+
+
     $(document).ready(function() {
-        
+
+
+
+
+
         l("ready");
         var cronos = [];
-        var endAudio = document.getElementById("audio");
-        var beepAudio = document.getElementById("audioBeep");
-        
-        
-        
-        if(localStorage.modo && parseInt(localStorage.modo) === Cronometro.MODE_CONT){
-            $("#selectModo").children().each(function(i){
-                if(i===0){
+//        var endAudio = document.getElementById("audio");
+
+
+
+
+
+        if (localStorage.modo && parseInt(localStorage.modo) === Cronometro.MODE_CONT) {
+            $("#selectModo").children().each(function(i) {
+                if (i === 0) {
                     $(this).attr("selected", true);
-                }else{
+                } else {
                     $(this).attr("selected", false);
                 }
             });
-        }else{
-            $("#selectModo").children().each(function(i){
-                if(i===0){
+        } else {
+            $("#selectModo").children().each(function(i) {
+                if (i === 0) {
                     $(this).attr("selected", false);
-                }else{
+                } else {
                     $(this).attr("selected", true);
                 }
             });
         }
-        if(localStorage.time){
+        if (localStorage.time) {
             var h, m, s;
             var tempoStorage = localStorage.time.split(" ");
-            h = parseInt(tempoStorage[2]);m = parseInt(tempoStorage[1]);s = parseInt(tempoStorage[0]);
-            $("#thoras").val(h); $("#tmin").val(m); $("#tseg").val(s);
+            h = parseInt(tempoStorage[2]);
+            m = parseInt(tempoStorage[1]);
+            s = parseInt(tempoStorage[0]);
+            $("#thoras").val(h);
+            $("#tmin").val(m);
+            $("#tseg").val(s);
         }
-        if(localStorage.beep){
+        if (localStorage.beep) {
             var h, m, s;
             var beepStorage = localStorage.beep.split(" ");
-            h = parseInt(beepStorage[2]);m = parseInt(beepStorage[1]);s = parseInt(beepStorage[0]);
-            $("#bhoras").val(h); $("#bmin").val(m); $("#bseg").val(s);
+            h = parseInt(beepStorage[2]);
+            m = parseInt(beepStorage[1]);
+            s = parseInt(beepStorage[0]);
+            $("#bhoras").val(h);
+            $("#bmin").val(m);
+            $("#bseg").val(s);
         }
-        
+
 
         $("#btnAddClock").on("click tap", function() {
             l("addClockTAPED");
             var c = new Cronometro();
             cronos.push(c);
             var h, m, s;
-            
-            if(localStorage.time){
+
+            if (localStorage.time) {
                 var tempoStorage = localStorage.time.split(" ");
-                h = parseInt(tempoStorage[2]);m = parseInt(tempoStorage[1]);s = parseInt(tempoStorage[0]);
-                $("#thoras").val(h); $("#tmin").val(m); $("#tseg").val(s);
-            }else{
-                h = parseInt($("#thoras").val()); m = parseInt($("#tmin").val()); s = parseInt($("#tseg").val());
+                h = parseInt(tempoStorage[2]);
+                m = parseInt(tempoStorage[1]);
+                s = parseInt(tempoStorage[0]);
+                $("#thoras").val(h);
+                $("#tmin").val(m);
+                $("#tseg").val(s);
+            } else {
+                h = parseInt($("#thoras").val());
+                m = parseInt($("#tmin").val());
+                s = parseInt($("#tseg").val());
             }
             c.setTime(s, m, h);
             var display = $("<div/>", {"class": "tempo", text: maskTemp(s, m, h)});
-            
-            if(localStorage.beep){
+
+            if (localStorage.beep) {
                 var beepStorage = localStorage.beep.split(" ");
-                h = parseInt(beepStorage[2]);m = parseInt(beepStorage[1]);s = parseInt(beepStorage[0]);
-                $("#bhoras").val(h); $("#bmin").val(m); $("#bseg").val(s);
-            }else{
-                h = parseInt($("#bhoras").val()); m = parseInt($("#bmin").val()); s = parseInt($("#bseg").val());
+                h = parseInt(beepStorage[2]);
+                m = parseInt(beepStorage[1]);
+                s = parseInt(beepStorage[0]);
+                $("#bhoras").val(h);
+                $("#bmin").val(m);
+                $("#bseg").val(s);
+            } else {
+                h = parseInt($("#bhoras").val());
+                m = parseInt($("#bmin").val());
+                s = parseInt($("#bseg").val());
             }
             c.setBeep(s, m, h);
-            
-            
-           
+
+
+
             c.onCount(function(s, m, h) {
                 display.text(maskTemp(s, m, h));
             }).onFinish(function() {
                 display.parent().addClass("animfim");
-                endAudio.play();
+
+//                endAudio.play();
+                playEndAudio();
                 //$("#audio").get(0).play();
                 setTimeout(function() {
                     display.text(maskTemp.apply(this, c.getCurrentTime()));
@@ -81,18 +160,19 @@
 
             }).onBeep(function() {
                 //$("#audioBeep").get(0).play();
-                beepAudio.play();
+//                beepAudio.play();
+                playBeepAudio();
             }).onCountPerc(function(perc) {
                 //console.log(perc);
-                display.parent().children(".progressbar").css("width", perc+"%");
+                display.parent().children(".progressbar").css("width", perc + "%");
             });
             $("ul#listCronometro").append(
                     $("<li/>", {"class": "cronometro"}).append(
-                        display).append(
-                        $("<img/>", {"class": "btnPlay", src: "img/play.png"})).append(
-                        $("<img/>", {"class": "btnPause", src: "img/pause.png"})).append(
-                        $("<img/>", {"class": "btnStop", src: "img/stop.png"})).append(
-                        $("<div/>", {"class": "progressbar"})));
+                    display).append(
+                    $("<img/>", {"class": "btnPlay", src: "img/play.png"})).append(
+                    $("<img/>", {"class": "btnPause", src: "img/pause.png"})).append(
+                    $("<img/>", {"class": "btnStop", src: "img/stop.png"})).append(
+                    $("<div/>", {"class": "progressbar"})));
         });
 
         $("ul#listCronometro").on("click tap", "li.cronometro > img.btnPlay", function() {
@@ -138,14 +218,14 @@
 
         $("#btnConfirmSetting").on("click tap", function() {
             var h = parseInt($("#thoras").val()), m = parseInt($("#tmin").val()), s = parseInt($("#tseg").val());
-            localStorage.time = s+" "+m+" "+h;
-            for (var i=0;i<cronos.length;i++){
-                    cronos[i].setTime(s, m, h);
+            localStorage.time = s + " " + m + " " + h;
+            for (var i = 0; i < cronos.length; i++) {
+                cronos[i].setTime(s, m, h);
             }
             h = parseInt($("#bhoras").val()), m = parseInt($("#bmin").val()), s = parseInt($("#bseg").val());
-            localStorage.beep = s+" "+m+" "+h;
-            for (var i=0;i<cronos.length;i++){
-                    cronos[i].setBeep(s, m, h);
+            localStorage.beep = s + " " + m + " " + h;
+            for (var i = 0; i < cronos.length; i++) {
+                cronos[i].setBeep(s, m, h);
             }
             $("#settingsPage").slideUp("slow");
         });
@@ -153,17 +233,17 @@
         $("#btnSetting").on("click tap", function() {
             $("#settingsPage").slideDown("slow");
         });
-        
-        $("#selectModo").on("change", function(){
+
+        $("#selectModo").on("change", function() {
             var modo = $(this).children("option:selected").text();
-            if(modo === "Contador"){
+            if (modo === "Contador") {
                 localStorage.modo = Cronometro.MODE_CONT;
-                for (var i=0;i<cronos.length;i++){
+                for (var i = 0; i < cronos.length; i++) {
                     cronos[i].setMode(Cronometro.MODE_CONT);
                 }
-            }else if(modo === "Regressivo"){
+            } else if (modo === "Regressivo") {
                 localStorage.modo = Cronometro.MODE_REGR;
-                for (var i=0;i<cronos.length;i++){
+                for (var i = 0; i < cronos.length; i++) {
                     cronos[i].setMode(Cronometro.MODE_REGR);
                 }
             }
@@ -172,32 +252,27 @@
             $(e.target).trigger({type: "focus", target: e.target});
         });
 
-        endAudio.addEventListener("ended", function() {
-            endAudio.load();
-        }, false);
-        beepAudio.addEventListener("ended", function() {
-            beepAudio.load();
-        }, false);
-        
-        
+
+
+
         //Para dispositivos móveis
         var tar, duracao;
         var todo = document.getElementById("todo");
-        todo.addEventListener("touchstart", function(e){
+        todo.addEventListener("touchstart", function(e) {
             e.preventDefault();
             //l("touchstart");
             tar = e.target;
             duracao = new Date().getTime();
         }, false);
-        todo.addEventListener("touchend", function(e){
+        todo.addEventListener("touchend", function(e) {
             e.preventDefault();
             //l("touchend");
-            if(tar == e.target && (new Date().getTime()) - duracao <2000){
+            if (tar == e.target && (new Date().getTime()) - duracao < 2000) {
                 l("tap");
                 $(e.target).trigger({type: "tap", target: e.target});
             }
         }, false);
-        
+
 //        $("body").on("touchstart", function(e){
 //            e.preventDefault();
 //            tar = e.target;
@@ -208,9 +283,9 @@
 //                $(e.target).trigger("click");
 //            }
 //        });
-        
-        
-        
+
+
+
         /*
          setInterval(function() {
          var temp;
@@ -244,17 +319,16 @@
 
     });
 
-    function maskTemp(s, m, h) { 
+    function maskTemp(s, m, h) {
         return (h < 10 ? "0" + h : h) +
                 ":" + (m < 10 ? "0" + m : m) +
                 ":" + (s < 10 ? "0" + s : s);
     }
-    
-    function l(p){
-        if(true){
+
+    function l(p) {
+        if (true) {
             console.log(p);
         }
     }
-
 
 })(jQuery);
